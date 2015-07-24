@@ -48,11 +48,7 @@
                     <button id="search" data-style="slide-left" class="btn btn-success col-lg-3 col-md-3 col-sm-3 col-xs-3 pull-right" type="submit"> <i id="icon" class="fa fa-search"></i>&nbsp&nbspSearch Youtube</button>
                 </form>
             </div>
-            <div id="results" class="well col-lg-8 col-lg-offset-2 col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1 col-xs-12">
-                <table class="table table-hover table-striped table-condensed">
-                    <tbody id = "results">
-                    </tbody>
-                </table>
+            <div id="results" class="well col-lg-8 col-lg-offset-2 col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1 col-xs-12" style="display: none;">
             </div>
         </div>
 
@@ -63,53 +59,66 @@
 
     <script type="text/javascript">
 
+    // $('#searchquery').keyup(function () {    //Uncomment for instant search
+
         $("#searchform").submit(function(e){
             e.preventDefault();
+
             var q = $("#searchquery").val()
-
-            // Google API key
-            var key = "AIzaSyB0BvPaPRqLZxgsO_8z7xGB1-SRcBvZB-8";
-
             var $results = $("#results");
 
+            // Google API key
+            var key = "";
+
             // API URL
-            var urlcall = "https://www.googleapis.com/youtube/v3/search?type=video&part=snippet&fields=items(id,snippet)"
+            var urlcall = "https://www.googleapis.com/youtube/v3/search?"
 
             // max results
-            urlcall += "&maxResults=10";
+            var maxResults = "12";
             
-            // search query
+            // API url
+            urlcall = urlcall + "type=video&part=snippet&fields=items(id,snippet)"
+            urlcall = urlcall + "&maxResults=" + maxResults;
             urlcall = urlcall + "&q=" + q;
-
-            // API key
             urlcall = urlcall + '&key=' + key;
 
-            var html = "";
+
+            var html;
             var count = 0;
 
             $.ajax({ 
                 type: 'GET', 
                 url: urlcall, 
                 success: function (data) {
-                    var items = data["items"];
 
+                    var items = data["items"];
+                    html = "<br><div class = 'row'>";
+                    
                     items.forEach(function (item) {
                     
-                        html += "<tr>";
+                        // Link thumbnail to YouTube Watch url
+                        html += '<div class = "col-md-3">'
+                        html += '<a href="http://youtu.be/' + item.id.videoId + '">';
 
-                        // Include the YouTube Watch URL
-                        html += '<td><a href="http://youtu.be/' + item.id.videoId + '">';
-             
                         // Add the video thumbnail
-                        html += '<img height="50%" width="50%" src="http://i.ytimg.com/vi/' + item.id.videoId + '/hqdefault.jpg">';
-             
-                        html += "</a></tr><br><br><br>";
+                        html += "<center>";
+                        html += '<img height="180px" width="180px" src="http://i.ytimg.com/vi/' + item.id.videoId + '/hqdefault.jpg">';
+                        html += "</center>";
+                        html += "</a>";
+                        html += "</div>";
+
+                        // Total results displayed
                         count++;
 
+                        if (count % 4 == 0)
+                            html += "</div><br><div class = 'row'>";
                     });
+
+                    html += "</div><br>";
 
                     console.log(html);
       
+                    $('#results').css('display', 'inline-block');
                     // Did YouTube return any search results?
                     if (count === 0)
                         $results.html("No videos found");
