@@ -25,21 +25,14 @@
 ###############################################################################
 """
 
-from flask import Flask, render_template
+from app import db
 
-muserve = Flask(__name__)
+class Queue(db.Model):
+    id = db.Column(db.Integer)
 
-@muserve.route("/")
-def hello():
-    return "Hello World!"
+    songid = db.Column(db.String(64), primary_key=True)
+    name = db.Column(db.String(300), index=True)
+    upvote = db.Column(db.Integer, index=True)
 
-@muserve.route('/welcome')
-def welcome():
-    return render_template('welcome.html')
-
-@muserve.route('/search')
-def search():
-    return render_template('search.html')
-
-if __name__ == "__main__":
-    muserve.run(debug = True)
+    def __repr__(self):
+        return '<Song %r>' % (self.songid)

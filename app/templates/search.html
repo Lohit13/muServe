@@ -32,6 +32,8 @@
         <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
         <link rel="stylesheet" href="static/css/ladda.min.css">
         <link rel="stylesheet" href="static/css/search.css" rel="stylesheet">
+        <link href='http://fonts.googleapis.com/css?family=Fjord+One' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="static/css/fonts.css" rel="stylesheet">
 
     </head>
 
@@ -68,7 +70,7 @@
             var $results = $("#results");
 
             // Google API key
-            var key = "";
+            var key = "AIzaSyB0BvPaPRqLZxgsO_8z7xGB1-SRcBvZB-8";
 
             // API URL
             var urlcall = "https://www.googleapis.com/youtube/v3/search?"
@@ -96,15 +98,20 @@
                     
                     items.forEach(function (item) {
                     
-                        // Link thumbnail to YouTube Watch url
-                        html += '<div class = "col-md-3">'
+                        html = html + '<div class = "col-md-3">';
                         html += '<a href="http://youtu.be/' + item.id.videoId + '">';
-
-                        // Add the video thumbnail
                         html += "<center>";
                         html += '<img height="180px" width="180px" src="http://i.ytimg.com/vi/' + item.id.videoId + '/hqdefault.jpg">';
-                        html += "</center>";
+                        html += "<br>"
+                        html = html + "<p>" + item.snippet.title + "</p>";
                         html += "</a>";
+
+                        html += '<form action = "/add/' + item.id.videoId + '" method = "POST">'
+                        html += "<input type = 'submit' class = 'btn btn-md btn-default' value = 'Add to Q' />";
+                        html += "<input type = 'hidden' name = 'title' value = '" + item.snippet.title + "' />";
+                        html += "</form>"
+
+                        html += "</center>";
                         html += "</div>";
 
                         // Total results displayed
@@ -116,15 +123,14 @@
 
                     html += "</div><br>";
 
-                    console.log(html);
-      
-                    $('#results').css('display', 'inline-block');
                     // Did YouTube return any search results?
                     if (count === 0)
                         $results.html("No videos found");
                     else 
                       // Display the YouTube search results
                         $results.html(html);
+
+                    $('#results').css('display', 'inline-block');
                 }
             });
 

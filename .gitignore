@@ -1,0 +1,5 @@
+*.pyc
+*.pyo
+muserve.db
+flask
+

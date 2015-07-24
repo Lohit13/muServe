@@ -23,3 +23,8 @@ body {
 #results {
     padding: 10px 0 0 0;
 }
+
+div {
+    font-family: 'Fjord One', serif;
+    font-size: 20px;
+}
