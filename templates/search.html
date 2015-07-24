@@ -1,0 +1,125 @@
+<!--
+===============================================================================
+
+    This file is part of muServe.
+
+    muServe is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    muServe is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with muServe; if not, write to the Free Software
+    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
+
+=============================================================================*/
+###############################################################################
+
+    Copyright (C) 2015 Kushagra Singh
+
+###############################################################################
+-->
+
+<html>
+    <head>
+
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <link rel="stylesheet" href="static/css/ladda.min.css">
+        <link rel="stylesheet" href="static/css/search.css" rel="stylesheet">
+
+    </head>
+
+    <body>
+
+        <div class="container-fluid">
+            <div class="well col-lg-8 col-lg-offset-2 col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1 col-xs-12">
+                <form id = "searchform" class="form-inline" action="#" method="post">
+                    <div class="input-group col-lg-8 col-md-8 col-sm-8 pull-left col-xs-8">
+                        <input id="searchquery" class="form-control" type="text" value="" placeholder="Search" name="q" autofocus="autofocus" />
+
+                        <!-- /btn-group -->
+                    </div>
+                    <button id="search" data-style="slide-left" class="btn btn-success col-lg-3 col-md-3 col-sm-3 col-xs-3 pull-right" type="submit"> <i id="icon" class="fa fa-search"></i>&nbsp&nbspSearch Youtube</button>
+                </form>
+            </div>
+            <div id="results" class="well col-lg-8 col-lg-offset-2 col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1 col-xs-12">
+                <table class="table table-hover table-striped table-condensed">
+                    <tbody id = "results">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </body>
+
+    <!-- Include the latest jQuery library -->
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+
+    <script type="text/javascript">
+
+        $("#searchform").submit(function(e){
+            e.preventDefault();
+            var q = $("#searchquery").val()
+
+            // Google API key
+            var key = "AIzaSyB0BvPaPRqLZxgsO_8z7xGB1-SRcBvZB-8";
+
+            var $results = $("#results");
+
+            // API URL
+            var urlcall = "https://www.googleapis.com/youtube/v3/search?type=video&part=snippet&fields=items(id,snippet)"
+
+            // max results
+            urlcall += "&maxResults=10";
+            
+            // search query
+            urlcall = urlcall + "&q=" + q;
+
+            // API key
+            urlcall = urlcall + '&key=' + key;
+
+            var html = "";
+            var count = 0;
+
+            $.ajax({ 
+                type: 'GET', 
+                url: urlcall, 
+                success: function (data) {
+                    var items = data["items"];
+
+                    items.forEach(function (item) {
+                    
+                        html += "<tr>";
+
+                        // Include the YouTube Watch URL
+                        html += '<td><a href="http://youtu.be/' + item.id.videoId + '">';
+             
+                        // Add the video thumbnail
+                        html += '<img height="50%" width="50%" src="http://i.ytimg.com/vi/' + item.id.videoId + '/hqdefault.jpg">';
+             
+                        html += "</a></tr><br><br><br>";
+                        count++;
+
+                    });
+
+                    console.log(html);
+      
+                    // Did YouTube return any search results?
+                    if (count === 0)
+                        $results.html("No videos found");
+                    else 
+                      // Display the YouTube search results
+                        $results.html(html);
+                }
+            });
+
+        });
+
+    </script>
+</html>
