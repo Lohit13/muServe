@@ -29,10 +29,67 @@ from flask import Flask, render_template, request, redirect, url_for, session
 from models import Queue
 from app import muServe, db
 
-@muServe.route("/")
-@muServe.route('/welcome')
-def welcome():
-    return render_template('welcome.html')
+
+
+@muServe.route('/')
+def home():
+    return redirect(url_for('queue'))
+
+
+@muServe.route('/queue')
+def queue():
+    links = []
+    queued = Queue.query.all()
+
+    for i in queued:
+        links.append(i)
+
+    return render_template('queue.html', allvids = links)
+
+
+# extracts current song from file
+# if not found, plays Knife Party's - Bonfire
+
+@muServe.route("/current")
+def current():
+    f = open("app/current.txt", "r")
+    currsong = f.read()
+    currsong = currsong.split("\n")
+
+    if len(currsong) == 3:
+        return str(currsong[0]) + "\n" + str(currsong[1]) + "\n" + str(currsong[2])
+    else:
+        f.close()
+        f = open("app/current.txt", "w")
+
+        try:
+            allsong = Queue.query.all()
+            allsong.sort(key = lambda x : x.upvote, reverse = True)
+            song = allsong[0]
+            stringtowrite = str(song.songid) + "\n" + str(song.name) + "\n" + str(song.upvote)
+            db.session.delete(song)
+            db.session.commit()
+        except:
+            stringtowrite = "e-IWRmpefzE\nKnife Party - 'Bonfire'\n1"
+        f.write(stringtowrite)
+        f.close()
+        return stringtowrite
+
+
+@muServe.route("/play")
+def play():
+    currsong = current()
+    currsong = currsong.split("\n")
+
+    currentsong = {}
+    currentsong["id"] = currsong[0]
+    currentsong["name"] = currsong[1]
+    currentsong["votes"] = currsong[2]
+
+    return render_template('play.html', song = currentsong)
+
+
+# Add /queue. This is public. Now playing plus up next and upvotes.
 
 @muServe.route('/search')
 def search():
@@ -49,8 +106,7 @@ def add(link):
             db.session.commit()
             print "added"
             session[link] = "1"
-            return redirect(url_for('welcome'))
-
+            return redirect(url_for('play'))
         else:
             try:
                 print session[link]
@@ -62,9 +118,7 @@ def add(link):
                 db.session.add(found)
                 db.session.commit()
 
-            return redirect(url_for('welcome'))
-
-
+            return redirect(url_for('play'))
     else:
         return redirect(url_for('search'))
 

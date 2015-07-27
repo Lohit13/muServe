@@ -1,0 +1,147 @@
+<!--
+===============================================================================
+
+    This file is part of muServe.
+
+    muServe is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    muServe is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with muServe; if not, write to the Free Software
+    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
+
+=============================================================================*/
+###############################################################################
+
+    Copyright (C) 2015 Kushagra Singh
+
+###############################################################################
+-->
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <title>muServe</title>
+
+    <meta name="viewport" content="width=1000, initial-scale=1.0, maximum-scale=1.0">
+
+    <!-- Loading Bootstrap -->
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+    <!-- Loading Flat UI -->
+    <link href="static/css/flat-ui.css" rel="stylesheet">
+    <link href="static/css/demo.css" rel="stylesheet">
+
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements. All other JS at the end of file. -->
+    <!--[if lt IE 9]>
+      <script src="dist/js/vendor/html5shiv.js"></script>
+      <script src="dist/js/vendor/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="demo-headline">
+        <h1 class="demo-logo">
+          <div class="logo"></div>
+          µServe
+          <small><i class="fa fa-volume-up"></i> now playing - {{ current }}</small>
+        </h1>
+      </div> <!-- /demo-headline -->
+
+
+      <div class="row demo-samples">
+
+        <div class = "col-xs-2"></div>
+        <!-- up next -->
+        <div class="col-xs-8">
+          <div class="todo">
+
+            <div class="todo-search">
+              <h3 class = "demo-logo">
+                <small>
+                  <center>
+                    <span style = "color:#ecf0f1">
+                      <i class="fa fa-music"></i> Up next
+                    </span>
+                  </center>
+                </small>
+              </h3>
+            </div>
+
+            <ul style = "overflow:scroll; height:600px">
+
+            {% for vid in allvids %}
+              <li class="">
+                <div class="todo-content">
+                  <div class = "row">
+                    <div class = "col-md-4">
+                      <a href = "http://youtu.be/{{ vid.songid }}">
+                          <img height="180px" width="180px" src="http://i.ytimg.com/vi/{{ vid.songid }}/hqdefault.jpg" class="img-rounded img-responsive">
+                      </a>
+                    </div>
+                    <div class = "col-md-8">
+                      <h4 class = "todo-name">
+                      {{ vid.name }}
+                      </h4>
+                    </div>
+                  </div>
+                </div>
+              </li>
+              
+            {% endfor %}
+            </ul>
+          </div><!-- /.todo -->
+        </div><!-- /.col-xs-4 -->
+
+      </div>
+
+      <div class="row demo-tiles">
+        <div class="col-xs-3">
+          <div class="tile">
+            <h3 class="tile-title">Web Oriented</h3>
+            <p>100% convertable to HTML/CSS layout.</p>
+          </div>
+        </div>
+
+        <div class="col-xs-3">
+          <div class="tile">
+            <h3 class="tile-title">Easy to Customize</h3>
+            <p>Vector-based shapes and minimum of layer styles.</p>
+          </div>
+        </div>
+
+        <div class="col-xs-3">
+          <div class="tile">
+            <h3 class="tile-title">Color Swatches</h3>
+            <p>Easy to add or change elements. </p>
+          </div>
+        </div>
+
+        <div class="col-xs-3">
+          <div class="tile tile-hot">
+            <h3 class="tile-title">Free for Share</h3>
+            <p>Your likes, shares and comments helps us.</p>
+          </div>
+
+        </div>
+      </div> <!-- /tiles -->
+
+    </div> <!-- /container -->
+
+
+    <script src = "http://code.jquery.com/jquery-latest.min.js"></script>
+    <script src = "static/js/flat-ui.js"></script>
+    <script src = "static/js/application.js"></script>
+
+
+<span class="select2-hidden-accessible" aria-live="polite" role="status"></span></body></html>
