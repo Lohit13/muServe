@@ -35,18 +35,6 @@ from app import muServe, db
 def home():
     return redirect(url_for('queue'))
 
-
-@muServe.route('/queue')
-def queue():
-    links = []
-    queued = Queue.query.all()
-
-    for i in queued:
-        links.append(i)
-
-    return render_template('queue.html', allvids = links)
-
-
 # extracts current song from file
 # if not found, plays Knife Party's - Bonfire
 
@@ -71,9 +59,52 @@ def current():
             db.session.commit()
         except:
             stringtowrite = "e-IWRmpefzE\nKnife Party - 'Bonfire'\n1"
+
         f.write(stringtowrite)
         f.close()
         return stringtowrite
+
+@muServe.route("/currentcount")
+def currentcount():
+    allsong = Queue.query.all()
+    return str(len(allsong))
+
+@muServe.route('/queue')
+def queue():
+    links = []
+    queued = Queue.query.all()
+    count = 0
+
+    for i in queued:
+        links.append(i)
+        count += 1
+
+    currsong = {}
+    currinfo = current().split("\n")
+    currsong["currname"] = currinfo[1]
+
+    return render_template('queue.html', allvids = links, currentsong = currsong,
+                            songcount = count)
+
+# next song
+@muServe.route("/next")
+def next():
+    allsong = Queue.query.all()
+    allsong.sort(key = lambda x : x.upvote, reverse = True)
+
+    try:
+        song = allsong[0]
+        newsong = str(song.songid) + "\n" + str(song.name) + "\n" + str(song.upvote)
+        db.session.delete(song)
+        db.session.commit()
+    except:
+        newsong = "e-IWRmpefzE\nKnife Party - 'Bonfire'\n1"
+
+    f = open("app/current.txt", "w")
+    f.write(newsong)
+    f.close()
+
+    return newsong
 
 
 @muServe.route("/play")

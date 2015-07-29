@@ -54,7 +54,7 @@
         <h1 class="demo-logo">
           <div class="logo"></div>
           µServe
-          <small><i class="fa fa-volume-up"></i> now playing - {{ current }}</small>
+          <small><i class="fa fa-volume-up"></i> now playing - {{ currentsong.currname }}</small>
         </h1>
       </div> <!-- /demo-headline -->
 
@@ -105,36 +105,7 @@
 
       </div>
 
-      <div class="row demo-tiles">
-        <div class="col-xs-3">
-          <div class="tile">
-            <h3 class="tile-title">Web Oriented</h3>
-            <p>100% convertable to HTML/CSS layout.</p>
-          </div>
-        </div>
 
-        <div class="col-xs-3">
-          <div class="tile">
-            <h3 class="tile-title">Easy to Customize</h3>
-            <p>Vector-based shapes and minimum of layer styles.</p>
-          </div>
-        </div>
-
-        <div class="col-xs-3">
-          <div class="tile">
-            <h3 class="tile-title">Color Swatches</h3>
-            <p>Easy to add or change elements. </p>
-          </div>
-        </div>
-
-        <div class="col-xs-3">
-          <div class="tile tile-hot">
-            <h3 class="tile-title">Free for Share</h3>
-            <p>Your likes, shares and comments helps us.</p>
-          </div>
-
-        </div>
-      </div> <!-- /tiles -->
 
     </div> <!-- /container -->
 
@@ -142,6 +113,40 @@
     <script src = "http://code.jquery.com/jquery-latest.min.js"></script>
     <script src = "static/js/flat-ui.js"></script>
     <script src = "static/js/application.js"></script>
+    <script type="text/javascript">
 
+    function getcurrentsong() {
+      $.ajax({
+        type: 'GET', 
+        url: "/current", 
+        success: function (data) {
+          if (data.split("\n")[1] != "{{currentsong.currname}}") {
+            location.reload();
+          }
+        }
+      });
+
+      $.ajax({
+        type: 'GET', 
+        url: "/currentcount", 
+        success: function (data) {
+          if (data != "{{songcount}}") {
+            location.reload();
+          }
+        }
+      });
+
+    }
+
+    function loopagain () {
+       setTimeout(function () {
+        getcurrentsong();
+        loopagain();
+       }, 20000)
+    }
+
+    loopagain();
+
+    </script>
 
 <span class="select2-hidden-accessible" aria-live="polite" role="status"></span></body></html>

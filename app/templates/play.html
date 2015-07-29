@@ -28,10 +28,12 @@
     <div id="player"></div>
 
     <script src="http://www.youtube.com/player_api"></script>
+    <script src = "http://code.jquery.com/jquery-latest.min.js"></script>
 
     <script>
 
         var player;
+
         function onYouTubePlayerAPIReady() {
             player = new YT.Player('player', {
               height: '390',
@@ -51,12 +53,28 @@
 
         // when video ends
         function onPlayerStateChange(event) {        
-            if(event.data === 0) {          
-                alert('done');
+            if(event.data === 0) {  
+
+                $.ajax({url: "/next", success: function(result)
+                {
+                    var res = result.split("\n");
+                    $("#name").html(res[1]);
+                    $("#upvotes").html(res[2]);
+                    player.loadVideoById(res[0]);
+                }}); 
             }
         }
+
+
 
     </script>
 
 
-    
+    <div id = "name">
+        {{ song.name }}
+    </div>
+
+    <div id = "upvotes">
+        {{ song.votes }}
+    </div>
+
