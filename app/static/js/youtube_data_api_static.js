@@ -23,6 +23,8 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
+var prev_req;
+
 $('#searchquery').keyup(function () {
 
     var q = $("#searchquery").val()
@@ -47,7 +49,18 @@ $('#searchquery').keyup(function () {
     var html;
     var count = 0;
 
-    $.ajax({ 
+    try
+    {
+        console.log("okk")
+        prev_req.abort();
+        console.log("aborted");
+    }
+    catch(e)
+    {
+        console.log(e);
+    }
+
+    prev_req = $.ajax({ 
         type: 'GET', 
         url: urlcall, 
         success: function (data) {

@@ -28,11 +28,11 @@
 <html>
     <head>
 
-        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
-        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <link rel="stylesheet" href="static/css/font-awesome.min.css">
+        <link rel="stylesheet" href="static/css/bootstrap.min.css">
         <link rel="stylesheet" href="static/css/ladda.min.css">
         <link rel="stylesheet" href="static/css/search.css" rel="stylesheet">
-        <link href='http://fonts.googleapis.com/css?family=Fjord+One' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="static/fonts/main.css" type='text/css'>
         <link rel="stylesheet" href="static/css/fonts.css" rel="stylesheet">
 
     </head>
@@ -42,12 +42,12 @@
         <div class="container-fluid">
             <div class="well col-lg-8 col-lg-offset-2 col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1 col-xs-12">
                 <form id = "searchform" class="form-inline" action="#" method="post">
-                    <div class="input-group col-lg-8 col-md-8 col-sm-8 pull-left col-xs-8">
-                        <input id="searchquery" class="form-control" type="text" value="" placeholder="Search" name="q" autofocus="autofocus" />
+                    <div class="input-group col-lg-12 col-md-12 col-sm-12 pull-left col-xs-12">
+                        <input id="searchquery" class="form-control" type="text" value="" placeholder="Search Youtube" autocomplete="off" name="q" autofocus="autofocus" />
 
                         <!-- /btn-group -->
                     </div>
-                    <button id="search" data-style="slide-left" class="btn btn-success col-lg-3 col-md-3 col-sm-3 col-xs-3 pull-right" type="submit"> <i id="icon" class="fa fa-search"></i>&nbsp&nbspSearch Youtube</button>
+                    
                 </form>
             </div>
             <div id="results" class="well col-lg-8 col-lg-offset-2 col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1 col-xs-12" style="display: none;">
@@ -57,7 +57,7 @@
     </body>
 
     <!-- Include the latest jQuery library -->
-    <script src = "http://code.jquery.com/jquery-latest.min.js"></script>
+    <script src = "static/js/jquery-latest.min.js"></script>
     <script src = "static/js/youtube_data_api_static.js"></script>
 
 

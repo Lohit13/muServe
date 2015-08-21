@@ -107,7 +107,7 @@ def next():
     return newsong
 
 
-@muServe.route("/play")
+@muServe.route("/play250896193")
 def play():
     currsong = current()
     currsong = currsong.split("\n")
@@ -117,12 +117,23 @@ def play():
     currentsong["name"] = currsong[1]
     currentsong["votes"] = currsong[2]
 
-    return render_template('play.html', song = currentsong)
+    queued = Queue.query.all()
+    print queued
+    return render_template('play.html', song = currentsong, allsongs = queued)
 
 
-# Add /queue. This is public. Now playing plus up next and upvotes.
+@muServe.route('/delete250896193/<path:link>', methods = ['GET'])
+def delit(link):
+    found = Queue.query.get(link)
 
-@muServe.route('/search')
+    if found == None:
+        pass
+    else:
+        db.session.delete(found)
+        db.session.commit()
+    return redirect(url_for('queue'))
+
+@muServe.route('/search', methods = ['GET', 'POST'])
 def search():
     return render_template('search.html')
 
@@ -135,9 +146,8 @@ def add(link):
             newsong = Queue(songid = link, name = request.form["title"], upvote = 1)
             db.session.add(newsong)
             db.session.commit()
-            print "added"
             session[link] = "1"
-            return redirect(url_for('play'))
+            return redirect(url_for('queue'))
         else:
             try:
                 print session[link]
@@ -149,9 +159,9 @@ def add(link):
                 db.session.add(found)
                 db.session.commit()
 
-            return redirect(url_for('play'))
+            return redirect(url_for('queue'))
     else:
-        return redirect(url_for('search'))
+        return redirect(url_for('queue'))
 
 if __name__ == "__main__":
     muServe.run(debug = True)

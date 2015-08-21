@@ -27,4 +27,4 @@
 
 from app import muServe
 
-muServe.run(debug=True)
+muServe.run(host = '0.0.0.0', debug = True)

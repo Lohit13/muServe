@@ -23,11 +23,11 @@
 //
 //###############################################################################
 
+var prev_req;
 
 $('#searchquery').keyup(function () {
 
     var q = $("#searchquery").val()
-
     var $results = $("#results");
 
     // API URL
@@ -44,8 +44,20 @@ $('#searchquery').keyup(function () {
 
     var html = "";
     var count = 0;
+        conole.log("okkkk")
 
-    $.ajax({ 
+    try
+    {
+        conole.log("okkkk")
+        prev_req.abort();
+        conole.log("aborted");
+    }
+    catch(e)
+    {
+        conole.log(e);
+    }
+
+    prev_req = $.ajax({ 
         type: 'GET', 
         url: urlcall, 
         success: function (data) {
